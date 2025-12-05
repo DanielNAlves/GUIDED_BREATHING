@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/png" href="assets/image/bem_estar.png" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <title>Método 4-7-8 - Controle de Respiração</title>
+  </head>
+  <body class="light">
+    <button id="themeToggle">Dark Mode</button>
+
+    <h1>Método 4-7-8</h1>
+    <div id="status">Pronto para iniciar</div>
+    <div id="timerDisplay">0</div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 200 200" role="img" aria-label="Guia visual">
+        <g id="bubbleGroup" class="bubble" transform="scale(1)">
+          <text
+            id="iconInspire"
+            x="100"
+            y="90"
+            text-anchor="middle"
+            font-size="58"
+            style="display: none"
+          >
+            🫁
+          </text>
+          <text
+            id="iconHold"
+            x="100"
+            y="90"
+            text-anchor="middle"
+            font-size="48"
+            style="display: none"
+          >
+            ⏸️
+          </text>
+          <text
+            id="iconExpire"
+            x="100"
+            y="90"
+            text-anchor="middle"
+            font-size="48"
+            style="display: none"
+          >
+            💨
+          </text>
+        </g>
+        <text
+          id="svgAction"
+          x="100"
+          y="170"
+          text-anchor="middle"
+          fill="var(--accent)"
+          font-size="1rem"
+        >
+          Clique em Iniciar
+        </text>
+      </svg>
+    </div>
+
+    <button id="startBtn" class="action">Iniciar</button>
+    <button id="stopBtn" class="action" disabled>Parar</button>
+
+    <div id="sessionCount"></div>
+
+    <audio id="beepSound">
+      <source
+        src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+        type="audio/ogg"
+      />
+    </audio>
+
+    <!-- Música Lofi de fundo (loop) -->
+    <audio id="bgMusic" loop volume="0.05">
+      <source
+        src="assets/audio/mixkit-sweet-september-282.mp3"
+        type="audio/mpeg"
+      />
+    </audio>
+
+    <!-- Toggle de música -->
+    <button
+      id="musicToggle"
+      style="
+        position: fixed;
+        top: 14px;
+        left: 14px;
+        padding: 8px 14px;
+        border: none;
+        border-radius: 8px;
+        background: #6c47ff;
+        color: white;
+        cursor: pointer;
+        font-size: 0.9rem;
+      "
+    >
+      Música: Off
+    </button>
+
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>
