@@ -16,6 +16,12 @@ const sessionCountEl = document.getElementById("sessionCount");
 const bgMusic = document.getElementById("bgMusic");
 const musicToggle = document.getElementById("musicToggle");
 
+// 🔔 NOVO: botão de beep
+const beepToggle = document.getElementById("beepToggle");
+
+// 🔔 NOVO: estado do beep
+let beepEnabled = true;
+
 // 🔊 Ajuste fino dos volumes (bem baixinho)
 bgMusic.volume = 0.005;  // música suave
 beep.volume = 0.004;     // beep mais discreto
@@ -30,6 +36,13 @@ musicToggle.addEventListener("click", () => {
     musicToggle.textContent = "Música: Off";
   }
 });
+
+// 🔔 NOVO: Toggle do Beep
+beepToggle.addEventListener("click", () => {
+  beepEnabled = !beepEnabled; // alterna entre ligado/desligado
+  beepToggle.textContent = beepEnabled ? "Beep: On" : "Beep: Off"; // atualiza texto
+});
+
 
 let running = false;
 let stopRequested = false;
@@ -62,6 +75,8 @@ function addSessionCount() {
 }
 
 function beepSound() {
+  if (!beepEnabled) return; // impede o beep quando está desligado
+
   try {
     beep.currentTime = 0;
     beep.play();
