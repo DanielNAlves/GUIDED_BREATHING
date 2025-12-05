@@ -88,23 +88,16 @@
       <button id="resetSessions" title="Zerar contagem do dia">
         Resetar hoje
       </button>
-      <button id="exportSessions" title="Exportar histórico (.json)">
-        Exportar JSON
-      </button>
     </div>
 
-    <!-- Chart controls -->
-    <div id="chartControls">
-      <select id="chartRange" aria-label="Intervalo do gráfico">
-        <option value="weekly">Últimos 7 dias</option>
-        <option value="monthly">Mês atual</option>
+    <!-- Gráfico de sessões -->
+    <div id="chartWidget">
+      <div id="chartTitle">Histórico de sessões</div>
+      <select id="chartRange">
+        <option value="weekly">7 dias</option>
+        <option value="monthly">30 dias</option>
       </select>
-      <canvas
-        id="sessionChart"
-        width="320"
-        height="140"
-        aria-label="Gráfico de sessões"
-      ></canvas>
+      <canvas id="sessionChart"></canvas>
     </div>
 
     <!-- Script (colocado no final para garantir DOM carregado) -->
