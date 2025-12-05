@@ -64,7 +64,8 @@
     <button id="startBtn" class="action">Iniciar</button>
     <button id="stopBtn" class="action" disabled>Parar</button>
 
-    <div id="sessionCount"></div>
+    <!-- Sessões do dia (data atual será colocada pelo JS) -->
+    <div id="sessionCount" data-date=""></div>
 
     <audio id="beepSound">
       <source
@@ -73,16 +74,40 @@
       />
     </audio>
 
-    <!-- Música Lofi de fundo (loop) -->
+    <!-- Música Lofi de fundo (arquivo local sugerido) -->
     <audio id="bgMusic" loop>
       <source src="assets/audio/vibe_mix.mp3" type="audio/mpeg" />
     </audio>
 
-    <!-- Toggle de música -->
+    <!-- Top controls (music & beep) -->
     <button id="musicToggle">Música: Off</button>
-
     <button id="beepToggle">Beep: On</button>
 
+    <!-- Controles extras (reset/export) -->
+    <div id="controls">
+      <button id="resetSessions" title="Zerar contagem do dia">
+        Resetar hoje
+      </button>
+      <button id="exportSessions" title="Exportar histórico (.json)">
+        Exportar JSON
+      </button>
+    </div>
+
+    <!-- Chart controls -->
+    <div id="chartControls">
+      <select id="chartRange" aria-label="Intervalo do gráfico">
+        <option value="weekly">Últimos 7 dias</option>
+        <option value="monthly">Mês atual</option>
+      </select>
+      <canvas
+        id="sessionChart"
+        width="320"
+        height="140"
+        aria-label="Gráfico de sessões"
+      ></canvas>
+    </div>
+
+    <!-- Script (colocado no final para garantir DOM carregado) -->
     <script src="assets/js/script.js"></script>
   </body>
 </html>
