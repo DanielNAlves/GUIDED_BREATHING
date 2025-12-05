@@ -19,15 +19,19 @@ const musicToggle = document.getElementById("musicToggle");
 const beepToggle = document.getElementById("beepToggle");
 
 const resetBtn = document.getElementById("resetSessions");
-const exportBtn = document.getElementById("exportSessions");
+
 const chartRange = document.getElementById("chartRange");
 const canvas = document.getElementById("sessionChart");
 const ctx = canvas.getContext("2d");
 
 // ------------------ Configurações iniciais ------------------
-let beepEnabled = true;
+let beepEnabled = false;
 bgMusic.volume = 0.05; // padrão confortável
 beep.volume = 0.15;
+
+// ADICIONADO → textos iniciais corretos
+musicToggle.textContent = "Música: Off";
+beepToggle.textContent = "Beep: Off";
 
 // ------------------ Persistência: sessionsData ------------------
 function getSessionsData() {
@@ -88,17 +92,6 @@ function autoBackup() {
   if (data) localStorage.setItem("sessionsBackup", data);
 }
 
-// ------------------ Exportar JSON ------------------
-function exportSessions() {
-  const data = localStorage.getItem("sessionsData") || "{}";
-  const blob = new Blob([data], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "historico_respiracao.json";
-  a.click();
-  URL.revokeObjectURL(url);
-}
 
 // ------------------ Histórico ------------------
 function getWeeklyHistory() {
@@ -137,7 +130,6 @@ function resizeCanvasForDPR() {
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 }
 function drawChart(data) {
-  // limpa
   resizeCanvasForDPR();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -147,7 +139,6 @@ function drawChart(data) {
   const max = Math.max(...data.map((x) => x.count), 1);
   const barW = w / data.length;
 
-  // fundo (transparente mantém o fundo do site)
   ctx.fillStyle = window.getComputedStyle(document.body).backgroundColor || "#fff";
   ctx.fillRect(0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
 
@@ -159,12 +150,10 @@ function drawChart(data) {
     ctx.fillStyle = "#4a6cf7";
     ctx.fillRect(x + 4, y, barW - 8, barH);
 
-    // label count
     ctx.fillStyle = "#fff";
     ctx.font = "10px Inter, Arial";
     ctx.fillText(String(d.count), x + 6, y - 4);
 
-    // label date curta (MM-DD)
     const lab = d.date.slice(5);
     ctx.fillStyle = "#666";
     ctx.fillText(lab, x + 6, padding + h + 10);
@@ -182,7 +171,6 @@ function renderChart() {
 }
 
 // ------------------ Áudio e animações ------------------
-// Música Toggle
 musicToggle.addEventListener("click", () => {
   if (bgMusic.paused) {
     bgMusic.play().catch(() => {});
@@ -193,7 +181,6 @@ musicToggle.addEventListener("click", () => {
   }
 });
 
-// Beep Toggle
 beepToggle.addEventListener("click", () => {
   beepEnabled = !beepEnabled;
   beepToggle.textContent = beepEnabled ? "Beep: On" : "Beep: Off";
@@ -236,7 +223,6 @@ function resetAnimation() {
   iconExpire.style.display = "none";
 }
 
-// contador
 function countdown(seconds, msg, animation) {
   return new Promise((resolve) => {
     statusEl.textContent = msg;
@@ -260,36 +246,45 @@ function countdown(seconds, msg, animation) {
   });
 }
 
-// sessão
 let running = false,
   stopRequested = false;
+
 async function startSession() {
   if (running) return;
   running = true;
   stopRequested = false;
   startBtn.disabled = true;
   stopBtn.disabled = false;
+
   try {
-    bgMusic.muted = false;
-    bgMusic.play().catch(() => {});
-    musicToggle.textContent = "Música: On";
+    if (!bgMusic.paused) {
+      bgMusic.play().catch(() => {});
+    }
   } catch (_) {}
+
   await countdown(4, "Inspire por 4s", animateInspire);
   if (stopRequested) return endSessionEarly();
+
   await countdown(7, "Segure por 7s", animateHold);
   if (stopRequested) return endSessionEarly();
+
   await countdown(8, "Expire por 8s", animateExhale);
   if (stopRequested) return endSessionEarly();
+
   resetAnimation();
   beepSound();
+
   statusEl.textContent = "Sessão concluída";
   timerEl.textContent = "0";
+
   addSessionCount();
+
   running = false;
   stopRequested = false;
   startBtn.disabled = false;
   stopBtn.disabled = true;
 }
+
 function endSessionEarly() {
   running = false;
   stopRequested = false;
@@ -303,10 +298,11 @@ function endSessionEarly() {
 startBtn.addEventListener("click", startSession);
 stopBtn.addEventListener("click", () => (stopRequested = true));
 
-// theme
+// Tema claro/escuro
 let theme = localStorage.getItem("theme") || "light";
 document.body.className = theme;
 themeToggle.textContent = theme === "light" ? "Dark Mode" : "Light Mode";
+
 themeToggle.addEventListener("click", () => {
   theme = theme === "light" ? "dark" : "light";
   document.body.className = theme;
@@ -314,17 +310,17 @@ themeToggle.addEventListener("click", () => {
   localStorage.setItem("theme", theme);
 });
 
-// controles extras
+// Extras
 resetBtn.addEventListener("click", () => {
   if (confirm("Zerar contagem de hoje?")) resetTodayCount();
 });
-exportBtn.addEventListener("click", exportSessions);
+
 chartRange.addEventListener("change", renderChart);
 
-// inicializa gráfico
+// Inicializa gráfico
 renderChart();
 
-// restaurar backup automaticamente (se não houver data principal)
+// Restaurar backup
 (function tryRestoreBackup() {
   const data = localStorage.getItem("sessionsData");
   const backup = localStorage.getItem("sessionsBackup");
