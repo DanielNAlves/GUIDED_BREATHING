@@ -17,8 +17,8 @@ const bgMusic = document.getElementById("bgMusic");
 const musicToggle = document.getElementById("musicToggle");
 
 // 🔊 Ajuste fino dos volumes (bem baixinho)
-bgMusic.volume = 0.004;  // música suave
-beep.volume = 0.002;     // beep mais discreto
+bgMusic.volume = 0.006;  // música suave
+beep.volume = 0.004;     // beep mais discreto
 
 // Música Toggle
 musicToggle.addEventListener("click", () => {
