@@ -87,6 +87,32 @@ svg {
   font-size: 0.9rem;
 }
 
+#musicToggle {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #6c47ff;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+#beepToggle {
+  position: fixed;
+  top: 14px;
+  right: 120px; /* ALTERADO - afastado do themeToggle */
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #ff914d;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
 /* Layout responsivo */
 @media (max-width: 768px) {
   body {
